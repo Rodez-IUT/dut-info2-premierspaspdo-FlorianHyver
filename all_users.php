@@ -26,7 +26,7 @@
 	?>
 	<form method="post" action="all_users.php">
 	<h3>Start with a letter :</h3>
-	<input type="text" name="lettre" placeholder="Tapez une lettre"/></p>
+	<input type="text" name="lettre" placeholder="Tapez une lettre" value="<?php if(isset($_POST['lettre'])) {echo $_POST['lettre'];} ?>"/></p>
 	<h3>and status is : </h3>
        	<select class="form-control" name="status">
        		<?php
