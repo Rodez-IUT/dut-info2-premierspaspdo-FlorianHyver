@@ -25,7 +25,7 @@
 
 	?>
 	<form method="post" action="all_users.php">
-	<h3>Start with a letter :</h3>
+	<h3>Start with a letter :</h3><p>seulement une seule lettre sera pris en compte et les apostrophe ne seront pas pris en compte</p>
 	<input type="text" name="lettre" placeholder="Tapez une lettre" value="<?php if(isset($_POST['lettre'])) {echo $_POST['lettre'];} ?>"/></p>
 	<h3>and status is : </h3>
        	<select class="form-control" name="status">
@@ -60,7 +60,7 @@
 			</td>
 		</thead>
 	<?php
-		if(isset($_POST["lettre"])) {
+		if(isset($_POST["lettre"]) && strlen($_POST["lettre"])==1 && $_POST["lettre"] != "'") { //qu'une seule lettre et pas d'apostrophe
 			$lettre = $_POST["lettre"];
 		} else {
 			$lettre = '';
