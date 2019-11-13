@@ -24,6 +24,26 @@
 		}
 
 	?>
+	<form method="post" action="all_users.php">
+	<h3>Start with a letter :</h3>
+	<input type="text" name="lettre" placeholder="Tapez une lettre"/></p>
+	<h3>and status is : </h3>
+       	<select class="form-control" name="status">
+       		<?php
+       			echo '<option ';
+       			if(isset($_POST["status"]) && 'Waiting for account validation' == $_POST["status"]){
+        			echo ' selected';
+        		}
+       			echo '>Waiting for account validation</option>';
+       			echo '<option ';
+       			if(isset($_POST["status"]) && 'Active Account' == $_POST["status"]){
+        			echo ' selected';
+        		}
+       			echo '>Active Account</option>';
+       		?>
+       	</select>
+       	<input type="submit" value="OK" />
+       </form>
 	<table>
 		<thead>
 			<td>
@@ -40,8 +60,21 @@
 			</td>
 		</thead>
 	<?php
-		$status_id = 2;
-		$lettre = 'e';
+		if(isset($_POST["lettre"])) {
+			$lettre = $_POST["lettre"];
+		} else {
+			$lettre = '';
+		}
+		if(isset($_POST["status"])) {
+			if ('Active Account' == $_POST["status"]) {
+				$status_id = '2';
+			} else {
+				$status_id = '1';
+			}
+		} else {
+			$status_id = '1';
+		}
+		
 		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name 
 							 FROM users U 
 							 JOIN status S 
