@@ -40,7 +40,15 @@
 			</td>
 		</thead>
 	<?php
-		$stmt = $pdo->query('SELECT U.id,U.username,U.email,S.name FROM users U JOIN status S ON S.id = U.status_id ORDER BY username');
+		$status_id = 2;
+		$lettre = 'e';
+		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name 
+							 FROM users U 
+							 JOIN status S 
+							 ON S.id = U.status_id 
+							 AND U.status_id = $status_id 
+							 WHERE username LIKE '$lettre%'
+							 ORDER BY username");
 		while ($row = $stmt->fetch())
 		{
 			echo '<tr>';
