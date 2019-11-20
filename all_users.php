@@ -40,6 +40,11 @@
         			echo ' selected';
         		}
        			echo '>Active Account</option>';
+       			echo '<option ';
+       			if(isset($_POST["status"]) && 'Waiting for account deletion' == $_POST["status"]){
+        			echo ' selected';
+        		}
+       			echo '>Waiting for account deletion</option>';
        		?>
        	</select>
        	<input type="submit" value="OK" />
@@ -68,6 +73,8 @@
 		if(isset($_POST["status"])) {
 			if ('Active Account' == $_POST["status"]) {
 				$status_id = '2';
+			} else if ('Waiting for account deletion' == $_POST["status"]) {
+				$status_id = '3';
 			} else {
 				$status_id = '1';
 			}
