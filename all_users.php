@@ -96,11 +96,16 @@
 		    echo '<td>'. $row['username']. '</td>';
 		    echo '<td>'. $row['email']. '</td>';
 		    echo '<td>'. $row['name']. '</td>';
-		    if($row['status_id'] == 3){
+		    if($row['status_id'] == 1){
 		    	echo '<td><a href="all_users.php?status_id=3&user_id='. $row['id']. '&action="askDeletion">Ask Deletion</a></td>';
 			}
 		    echo '</tr>';
 		}
+
+		if(isset($_GET["action"]) && isset($_GET["status_id"]) && isset($_GET["user_id"])) { 
+			
+		} 
+
 	?>
 	</table>
 </body>
