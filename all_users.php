@@ -24,24 +24,24 @@
 		}
 
 	?>
-	<form method="post" action="all_users.php">
+	<form method="GET" action="all_users.php">
 	<h3>Start with a letter :</h3><p>seulement une seule lettre sera pris en compte et les apostrophe ne seront pas pris en compte</p>
-	<input type="text" name="lettre" placeholder="Tapez une lettre" value="<?php if(isset($_POST['lettre'])) {echo $_POST['lettre'];} ?>"/></p>
+	<input type="text" name="lettre" placeholder="Tapez une lettre" value="<?php if(isset($_GET['lettre'])) {echo $_GET['lettre'];} ?>"/></p>
 	<h3>and status is : </h3>
        	<select class="form-control" name="status">
        		<?php
        			echo '<option ';
-       			if(isset($_POST["status"]) && 'Waiting for account validation' == $_POST["status"]){
+       			if(isset($_GET["status"]) && 'Waiting for account validation' == $_GET["status"]){
         			echo ' selected';
         		}
        			echo '>Waiting for account validation</option>';
        			echo '<option ';
-       			if(isset($_POST["status"]) && 'Active Account' == $_POST["status"]){
+       			if(isset($_GET["status"]) && 'Active Account' == $_GET["status"]){
         			echo ' selected';
         		}
        			echo '>Active Account</option>';
        			echo '<option ';
-       			if(isset($_POST["status"]) && 'Waiting for account deletion' == $_POST["status"]){
+       			if(isset($_GET["status"]) && 'Waiting for account deletion' == $_GET["status"]){
         			echo ' selected';
         		}
        			echo '>Waiting for account deletion</option>';
@@ -65,15 +65,15 @@
 			</td>
 		</thead>
 	<?php
-		if(isset($_POST["lettre"]) && strlen($_POST["lettre"])==1 && $_POST["lettre"] != "'") { //qu'une seule lettre et pas d'apostrophe
-			$lettre = $_POST["lettre"];
+		if(isset($_GET["lettre"]) && strlen($_GET["lettre"])==1 && $_GET["lettre"] != "'") { //qu'une seule lettre et pas d'apostrophe
+			$lettre = $_GET["lettre"];
 		} else {
 			$lettre = '';
 		}
-		if(isset($_POST["status"])) {
-			if ('Active Account' == $_POST["status"]) {
+		if(isset($_GET["status"])) {
+			if ('Active Account' == $_GET["status"]) {
 				$status_id = '2';
-			} else if ('Waiting for account deletion' == $_POST["status"]) {
+			} else if ('Waiting for account deletion' == $_GET["status"]) {
 				$status_id = '3';
 			} else {
 				$status_id = '1';
@@ -81,8 +81,8 @@
 		} else {
 			$status_id = '1';
 		}
-		
-		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name 
+
+		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name,U.status_id 
 							 FROM users U 
 							 JOIN status S 
 							 ON S.id = U.status_id 
@@ -96,6 +96,9 @@
 		    echo '<td>'. $row['username']. '</td>';
 		    echo '<td>'. $row['email']. '</td>';
 		    echo '<td>'. $row['name']. '</td>';
+		    if($row['status_id'] == 3){
+		    	echo '<td><a href="all_users.php?status_id=3&user_id='. $row['id']. '&action="askDeletion">Ask Deletion</a></td>';
+			}
 		    echo '</tr>';
 		}
 	?>
