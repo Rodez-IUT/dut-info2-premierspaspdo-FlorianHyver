@@ -65,34 +65,6 @@
 			</td>
 		</thead>
 	<?php
-		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name,U.status_id 
-							 FROM users U 
-							 JOIN status S 
-							 ON S.id = U.status_id 
-							 AND U.status_id = $status_id 
-							 WHERE username LIKE '$lettre%'
-							 ORDER BY username");
-		while ($row = $stmt->fetch())
-		{
-			echo '<tr>';
-		    echo '<td>'. $row['id']. '</td>';
-		    echo '<td>'. $row['username']. '</td>';
-		    echo '<td>'. $row['email']. '</td>';
-		    echo '<td>'. $row['name']. '</td>';
-		    if($row['status_id'] == 2){
-		    	echo '<td><a href="all_users.php?status_id=3&user_id='. $row['id']. '&action="askDeletion">Ask Deletion</a></td>';
-			}
-		    echo '</tr>';
-		}
-
-		if(isset($_GET["action"]) && isset($_GET["status_id"]) && isset($_GET["user_id"])) { 
-			$stmt = $pdo->prepare("INSERT INTO action_log (action_date, action_name, user_id) VALUES (NOW(), ?, ?)");
-			$stmt->execute([$_GET["action"], $_GET["user_id"]]);
-		} 
-		if(isset($_GET["action"]) && isset($_GET["status_id"]) && isset($_GET["user_id"])) { 
-			$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
-			$stmt->execute([3,$_GET["user_id"]]);
-		} 
 
 		if(isset($_GET["lettre"]) && strlen($_GET["lettre"])==1 && $_GET["lettre"] != "'") { //qu'une seule lettre et pas d'apostrophe
 			$lettre = $_GET["lettre"];
@@ -110,6 +82,36 @@
 		} else {
 			$status_id = '1';
 		}
+		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name,U.status_id 
+							 FROM users U 
+							 JOIN status S 
+							 ON S.id = U.status_id 
+							 AND U.status_id = $status_id 
+							 WHERE username LIKE '$lettre%'
+							 ORDER BY username");
+		while ($row = $stmt->fetch())
+		{
+			echo '<tr>';
+		    echo '<td>'. $row['id']. '</td>';
+		    echo '<td>'. $row['username']. '</td>';
+		    echo '<td>'. $row['email']. '</td>';
+		    echo '<td>'. $row['name']. '</td>';
+		    if($row['status_id'] == 1){
+		    	echo '<td><a href="all_users.php?status_id=3&user_id='. $row['id']. '&action="askDeletion">Ask Deletion</a></td>';
+			}
+		    echo '</tr>';
+		}
+
+		if(isset($_GET["action"]) && isset($_GET["status_id"]) && isset($_GET["user_id"])) { 
+			$stmt = $pdo->prepare("INSERT INTO action_log (action_date, action_name, user_id) VALUES (NOW(), ?, ?)");
+			$stmt->execute([$_GET["action"], $_GET["user_id"]]);
+		} 
+		if(isset($_GET["action"]) && isset($_GET["status_id"]) && isset($_GET["user_id"])) { 
+			$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
+			$stmt->execute([3,$_GET["user_id"]]);
+		} 
+
+		
 
 	?>
 	</table>
